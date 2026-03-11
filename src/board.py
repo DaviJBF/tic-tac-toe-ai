@@ -1,17 +1,23 @@
-SIZE = 9
-board = [''
-' ' for _ in range(SIZE)]
+import os
 
-def print_board(board):
+SIZE = 9
+
+def clear_cli():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+board = [' ' for _ in range(SIZE)]
+
+
+def print_board():
     print(
-    f"3  {board[0]} | {board[1]} | {board[2]}\n" \
+    f"\n3  {board[0]} | {board[1]} | {board[2]}\n" \
     "  -----------\n" \
     f"2  {board[3]} | {board[4]} | {board[5]}\n" \
     "  -----------\n" \
     f"1  {board[6]} | {board[7]} | {board[8]}\n" \
-    "   a   b   c")
+    "   a   b   c\n")
 
-def check_winner(board):
+def check_winner():
     x_won = False
     o_won = False
     # Checking rows
@@ -42,20 +48,82 @@ def check_winner(board):
         elif board[6] == 'O':
             o_won = True
 
-    if x_won:
-        if o_won:
-            return None
-        else:
-            return 'X'
-    elif o_won:
-        return 'O'
+    if x_won:   return 'X'
+    elif o_won: return 'O'
     else:
-        return 'draw'
+        if avalible_moves(): return None
+        else: return 'draw'
     
-def get_avalible_moves(board):
-    avalible = []
+def avalible_moves():
     for i in range(SIZE):
         if board[i] == ' ':
-            avalible.append(i)
-    return avalible
+            return True
+    return False
 
+def read_move(x_turn):
+    invalid = False
+    while True:
+        clear_cli()
+        print_board()
+        if invalid:
+            print("Invalid move, try again.")
+        if x_turn:
+            move = input("\'X\' Turn. Enter your move: ")
+        else:
+            move = input("\'O\' Turn. Enter your move: ")
+        match move.lower():
+            case 'a1': move = 6
+            case 'a2': move = 3
+            case 'a3': move = 0
+            case 'b1': move = 7
+            case 'b2': move = 4
+            case 'b3': move = 1
+            case 'c1': move = 8
+            case 'c2': move = 5
+            case 'c3': move = 2
+            case _:
+                invalid = True
+                continue
+        if board[move] == ' ':
+            if x_turn:
+                board[move] = 'X'
+            else:
+                board[move] = 'O'
+            return
+        else:
+            invalid = True
+        
+
+
+def game_loop():
+    winner = None
+    for i in range(SIZE):
+        if i % 2 == 0:
+            x_turn = True
+        else:
+            x_turn = False
+        read_move(x_turn)
+        if i > 4:
+            validator = check_winner()
+            match validator:
+                case None:
+                    continue
+                case 'X':
+                    winner = 'X'
+                case 'O':
+                    winner = 'O'
+                case _:
+                    winner = 'draw'
+            break
+                
+    clear_cli()
+    print_board()
+    if winner == 'X':
+        print("\'X\' won, game over.")
+    elif winner == 'O':
+        print("\'O\' won, game over.")
+    else:
+        print("Draw, game over.")
+
+
+game_loop()
