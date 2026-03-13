@@ -2,13 +2,13 @@ import os
 
 SIZE = 9
 
+board = [' ' for _ in range(SIZE)]
+
 def clear_cli():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-board = [' ' for _ in range(SIZE)]
-
-
 def print_board():
+    clear_cli()
     print(
     f"\n3  {board[0]} | {board[1]} | {board[2]}\n" \
     "  -----------\n" \
@@ -20,34 +20,20 @@ def print_board():
 def check_winner(table):
     x_won = False
     o_won = False
-    # Checking rows
     for i in range(0, 9, 3):
         if table[i] != ' ' and table[i] == table[i+1] == table[i+2]:
-            if table[i] == 'X':
-                x_won = True
-            else:
-                o_won = True
-    # Checking colunms
+            if table[i] == 'X': x_won = True
+            else: o_won = True
     for i in range(3):
         if table[i] != ' ' and table[i] == table[i+3] == table[i+6]:
-            if table[i] == 'X':
-                x_won = True
-            else:
-                o_won = True
-    
-    # Checking diagonals
+            if table[i] == 'X': x_won = True
+            else: o_won = True
     if table[0] != ' ' and table[0] == table[4] == table[8]:
-        if table[0] == 'X':
-                x_won = True
-        else:
-            o_won = True
-    
+        if table[0] == 'X': x_won = True
+        else: o_won = True    
     if table[2] != ' ' and table[2] == table[4] == table[6]:
-        if table[2] == 'X':
-                x_won = True
-        else:
-            o_won = True
-
+        if table[2] == 'X': x_won = True
+        else: o_won = True
     if x_won:   return 'X'
     elif o_won: return 'O'
     else:
@@ -57,20 +43,12 @@ def check_winner(table):
 def avalible_moves(table):
     moves = []
     for i in range(SIZE):
-        if table[i] == ' ':
-            moves.append(i)
+        if table[i] == ' ': moves.append(i)
     return moves
-
-def check_avalible(table):
-    for i in range(SIZE):
-        if table[i] == ' ':
-            return True
-    return False
 
 def minmax(table, is_max):
     result = check_winner(table)
     if result:
-            result = check_winner(table)
             if result:
                 if result == 'X': return 1
                 elif result == 'O': return -1
@@ -105,32 +83,23 @@ def bot_move(table, turn):
             table[i] = ' '
     else:
         best_score = 2
-        best_move = 1
+        best_move = -1
         for i in avalible:
             table[i] = 'O'
             test = minmax(table, True)
             if test < best_score:
                 best_score = test
                 best_move = i
-                table[i] = ' '
-
+            table[i] = ' '
     return best_move
-
-
-        
-
 
 def read_move(x_turn):
     invalid = False
     while True:
-        clear_cli()
         print_board()
-        if invalid:
-            print("Invalid move, try again.")
-        if x_turn:
-            move = input("\'X\' Turn. Enter your move: ")
-        else:
-            move = input("\'O\' Turn. Enter your move: ")
+        if invalid: print("Invalid move, try again.")
+        if x_turn: move = input("\'X\' Turn. Enter your move: ")
+        else: move = input("\'O\' Turn. Enter your move: ")
         match move.lower():
             case 'a1': move = 6
             case 'a2': move = 3
@@ -145,26 +114,20 @@ def read_move(x_turn):
                 invalid = True
                 continue
         if board[move] == ' ':
-            if x_turn:
-                board[move] = 'X'
-            else:
-                board[move] = 'O'
+            if x_turn: board[move] = 'X'
+            else: board[move] = 'O'
             return
-        else:
-            invalid = True
+        else: invalid = True
         
 def game_loop():
     winner = None
     for i in range(SIZE):
-        if i % 2 == 0:
-            x_turn = True
-        else:
-            x_turn = False
+        if i % 2 == 0: x_turn = True
+        else: x_turn = False
         if x_turn:
             move = bot_move(board, 'X')
             board[move] = 'X'
-        else:
-            read_move(x_turn)
+        else: read_move(x_turn)
         if i > 3:
             validator = check_winner(board)
             match validator:
@@ -177,12 +140,9 @@ def game_loop():
                 case _:
                     winner = 'draw'
             break
-                
-    clear_cli()
     print_board()
-    if winner == 'X':
-        print("\'X\' won, game over.")
-    elif winner == 'O':
-        print("\'O\' won, game over.")
-    else:
-        print("Draw, game over.")
+    if winner == 'X': print("\'X\' won, game over.")
+    elif winner == 'O': print("\'O\' won, game over.")
+    else: print("Draw, game over.")
+
+game_loop()
