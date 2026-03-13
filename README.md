@@ -10,7 +10,7 @@ A command-line Tic-Tac-Toe game where the AI is powered by the **Minimax algorit
 * **Python 3.10 or higher**
 
 To check your version, run:
-```bash
+```
 # On Linux/macOS
 python3 --version
 
@@ -26,17 +26,17 @@ python --version
 If you have curl installed, download and start the game:
 
 **Linux / macOS / Windows CMD:**
-```bash
+```
 curl -O [https://raw.githubusercontent.com/davijbf/tic-tac-toe-ai/main/src/main.py](https://raw.githubusercontent.com/davijbf/tic-tac-toe-ai/main/src/main.py) && python3 main.py
 ```
 
 **Windows PowerShell:**
-```powershell
+```
 curl -O [https://raw.githubusercontent.com/davijbf/tic-tac-toe-ai/main/src/main.py](https://raw.githubusercontent.com/davijbf/tic-tac-toe-ai/main/src/main.py); python main.py
 ```
 
 ### Option 2: Clone the Repo
-```bash
+```
 git clone [https://github.com/davijbf/tic-tac-toe-ai.git](https://github.com/davijbf/tic-tac-toe-ai.git)
 cd tic-tac-toe-ai
 
